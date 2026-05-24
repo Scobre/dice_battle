@@ -1,0 +1,31 @@
+<div class="dice">
+
+  <div class="dice-title">
+    D<%= dice.sides %>
+  </div>
+
+  <div class="dice-faces">
+
+    <% dice.dice_faces.order(:position).each do |face| %>
+
+      <div class="dice-face <%= 'active-face' if dice.last_rolled_face_id == face.id %>">
+
+        <div class="face-name">
+          <%= face.face_template.name %>
+        </div>
+
+        <div class="face-icon">
+          <%= face.face_template.icon %>
+        </div>
+
+        <div class="face-value">
+          <%= face.face_template.value %>
+        </div>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>

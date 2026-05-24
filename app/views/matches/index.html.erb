@@ -1,0 +1,29 @@
+<h1>Dice Builder</h1>
+
+<h2>Create Match</h2>
+
+<%= form_with url: matches_path do |f| %>
+  <div>
+    <%= label_tag :player_count, "Players" %>
+
+    <%= select_tag :player_count,
+      options_for_select((2..6).to_a, 2)
+    %>
+  </div>
+
+  <br>
+
+  <%= submit_tag "Create Match" %>
+<% end %>
+
+<hr>
+
+<h2>Matches</h2>
+
+<ul>
+  <% @matches.each do |match| %>
+    <li>
+      <%= link_to "Match ##{match.id}", match_path(match) %>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,81 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.shop {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.shop-item {
+  background: white;
+  border: 2px solid #222;
+  padding: 12px;
+  width: 180px;
+}
+
+.players {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.player-panel {
+  background: white;
+  border: 2px solid black;
+  padding: 16px;
+}
+
+.dices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dice {
+  background: #fafafa;
+  border: 2px solid #444;
+  border-radius: 8px;
+  width: 220px;
+  padding: 10px;
+}
+
+.dice-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.dice-faces {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dice-face {
+  background: white;
+  border: 1px solid #999;
+  padding: 6px;
+  min-height: 50px;
+}
+
+.active-face {
+  border: 3px solid gold;
+  background: #fff8cc;
+  transform: scale(1.05);
+}
+
+.face-name {
+  font-size: 12px;
+}
+
+.face-icon {
+  font-size: 28px;
+  margin-bottom: 4px;
+}
+
+.face-value {
+  font-size: 20px;
+  font-weight: bold;
+}
