@@ -7,11 +7,13 @@ class Seeder
     players = [
       {
         match: match,
-        name: "Alice"
+        name: "Alice",
+        position: 0
       },
       {
         match: match,
-        name: "Bob"
+        name: "Bob",
+        position: 1
       }
     ]
 
@@ -21,6 +23,6 @@ class Seeder
     match.update(active_player: match.players.first)
 
     ShopRefillService.call(match)
-    DrawCardsService.call(match.players.first)
+    # DrawCardsService.call(match.players.first)
   end
 end

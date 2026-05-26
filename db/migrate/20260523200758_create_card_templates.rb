@@ -5,8 +5,11 @@ class CreateCardTemplates < ActiveRecord::Migration[8.0]
 
       t.integer :card_type, null: false
 
-      t.integer :cost, default: 0
+      t.integer :gold_cost, default: 0
+      t.integer :mana_cost, default: 0
       t.integer :rarity, default: 0
+
+      # t.boolean :passive, default: false, null: false
 
       t.jsonb :effects, default: []
 

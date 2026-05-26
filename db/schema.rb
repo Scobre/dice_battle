@@ -17,7 +17,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_23_223748) do
   create_table "card_templates", force: :cascade do |t|
     t.string "name", null: false
     t.integer "card_type", null: false
-    t.integer "cost", default: 0
+    t.integer "gold_cost", default: 0
+    t.integer "mana_cost", default: 0
     t.integer "rarity", default: 0
     t.jsonb "effects", default: []
     t.datetime "created_at", null: false
@@ -50,7 +51,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_23_223748) do
     t.integer "face_type", null: false
     t.integer "value", default: 0
     t.integer "rarity", default: 0
-    t.integer "cost", default: 0
+    t.integer "gold_cost", default: 0
     t.jsonb "tags", default: []
     t.jsonb "effects", default: []
     t.datetime "created_at", null: false
@@ -88,8 +89,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_23_223748) do
   create_table "player_cards", force: :cascade do |t|
     t.bigint "player_id", null: false
     t.bigint "card_template_id", null: false
-    t.integer "zone", default: 0
-    t.integer "position"
+    t.boolean "exhausted", default: false, null: false
+    t.integer "cooldown", default: 0, null: false
+    t.integer "charges"
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_template_id"], name: "index_player_cards_on_card_template_id"
@@ -99,6 +102,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_05_23_223748) do
   create_table "players", force: :cascade do |t|
     t.bigint "match_id", null: false
     t.string "name", null: false
+    t.integer "position", default: 0, null: false
     t.integer "health", default: 20, null: false
     t.integer "mastery", default: 0, null: false
     t.integer "gold", default: 0, null: false

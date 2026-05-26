@@ -28,7 +28,7 @@ class ShopPurchaseService
   attr_reader :player, :shop_slot, :dice_face_id
 
   def cost
-    item.cost
+    item.gold_cost
   end
 
   def item

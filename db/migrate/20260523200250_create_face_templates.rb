@@ -8,7 +8,7 @@ class CreateFaceTemplates < ActiveRecord::Migration[8.0]
       t.integer :value, default: 0
 
       t.integer :rarity, default: 0
-      t.integer :cost, default: 0
+      t.integer :gold_cost, default: 0
 
       t.jsonb :tags, default: []
       t.jsonb :effects, default: []

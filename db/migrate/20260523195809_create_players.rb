@@ -4,6 +4,7 @@ class CreatePlayers < ActiveRecord::Migration[8.0]
       t.belongs_to :match, null: false, foreign_key: true
 
       t.string :name, null: false
+      t.integer :position, default: 0, null: false
 
       t.integer :health, default: 20, null: false
       t.integer :mastery, default: 0, null: false

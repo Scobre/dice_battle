@@ -1,0 +1,6 @@
+<h2>
+  Active Player:
+  <%= match.active_player.name %>
+</h2>
+
+<%= button_to "End Turn", end_turn_match_path(match), method: :post %>

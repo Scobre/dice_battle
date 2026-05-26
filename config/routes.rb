@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   resources :matches, only: [:index, :show, :create] do
     member do
+      post :activate_card
       post :buy
       post :end_turn
       post :play_card

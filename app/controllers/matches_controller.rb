@@ -15,32 +15,56 @@ class MatchesController < ApplicationController
     redirect_to match_path(match)
   end
 
+  def activate_card
+    @match = Match.find_by(id: params[:id])
+
+    player_card =
+      PlayerCard.find_by(id: params[:player_card_id])
+
+    Cards::CardActivationService.call(player_card)
+
+    respond_to do |format|
+
+      format.turbo_stream
+
+      format.html do
+        redirect_to @match
+      end
+    end
+  end
+
   def buy
-    match = Match.find_by(id: params[:id])
+    @match = Match.find_by(id: params[:id])
 
     success = ShopPurchaseService.call(
-      player: match.active_player,
-      shop_slot: match.shop_slots.find(params[:shop_slot_id]),
+      player: @match.active_player,
+      shop_slot: @match.shop_slots.find(params[:shop_slot_id]),
       dice_face_id: params[:dice_face_id]
     )
 
-    notice = nil
-    alert = nil
-    if success
-      notice = "Purchase successful"
-    else
-      alert ="Not enough gold"
-    end
+    respond_to do |format|
 
-    redirect_to match_path(match), notice: notice, alert: alert
+      format.turbo_stream
+
+      format.html do
+        redirect_to @match
+      end
+    end
   end
 
   def end_turn
-    match = Match.find_by(id: params[:id])
+    @match = Match.find_by(id: params[:id])
 
-    TurnManagerService.next_turn(match)
+    TurnManagerService.next_turn(@match)
 
-    redirect_to match_path(match)
+    respond_to do |format|
+
+      format.turbo_stream
+
+      format.html do
+        redirect_to match_path(@match)
+      end
+    end
   end
 
   def play_card
@@ -49,7 +73,7 @@ class MatchesController < ApplicationController
     player_card = match
       .active_player
       .player_cards
-      .find(params[:player_card_id])
+      .find_by(id: params[:player_card_id])
 
     PlayCardService.call(player_card)
 
@@ -57,12 +81,19 @@ class MatchesController < ApplicationController
   end
 
   def roll_dice
-    match = Match.find_by(id: params[:id])
+    @match = Match.find_by(id: params[:id])
 
-    player = match.players.find(params[:player_id])
+    player = @match.players.find_by(id: params[:player_id])
 
     DiceRollerService.call(player)
 
-    redirect_to match_path(match)
+    respond_to do |format|
+
+      format.turbo_stream
+
+      format.html do
+        redirect_to match_path(@match)
+      end
+    end
   end
 end

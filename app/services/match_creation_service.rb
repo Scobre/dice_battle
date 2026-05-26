@@ -23,7 +23,7 @@ class MatchCreationService
 
     match.update(active_player: match.players.first)
     
-    DrawCardsService.call(match.players.first)
+    # DrawCardsService.call(match.players.first)
 
     ShopRefillService.call(match)
 
@@ -44,7 +44,7 @@ class MatchCreationService
   def create_players(match)
     player_count.times do |index|
       player = match.players.create(
-        name: PLAYER_NAMES[index]
+        name: PLAYER_NAMES[index], position: index
       )
     end
 

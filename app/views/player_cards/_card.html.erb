@@ -1,0 +1,95 @@
+<%
+  template = card.card_template
+
+  can_play =
+    player == match.active_player &&
+    player.mana >= template.mana_cost &&
+    !card.exhausted &&
+    card.cooldown <= 0
+
+  exhausted = card.exhausted
+%>
+
+<div class="
+  player-card
+  <%= template.card_type %>
+
+  <%= 'playable-card' if can_play %>
+
+  <%= 'exhausted-card' if exhausted %>
+"
+  data-controller="card"
+  data-card-url-value="<%= activate_card_match_path(match, player_card_id: card.id) %>"
+>
+
+  <div class="card-header">
+
+    <strong>
+      <%= card.card_template.name %>
+    </strong>
+
+  </div>
+
+  <div class="card-cost">
+
+    <% if template.gold_cost > 0 %>
+      💰 <%= template.gold_cost %>
+    <% end %>
+
+    <% if template.mana_cost > 0 %>
+      🔮 <%= template.mana_cost %>
+    <% end %>
+
+  </div>
+
+  <div class="card-effects">
+
+    <% card.card_template.effects.each do |effect| %>
+
+      <div class="effect-line">
+
+        <% if effect["mastery_required"].to_i > 0 %>
+
+          ⭐
+          <%= effect["mastery_required"] %> :
+
+        <% end %>
+
+        <%= render_effect(effect) %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+  <% if playable %>
+
+    <% can_play =
+      player.mana >= card.card_template.mana_cost &&
+      !card.exhausted &&
+      card.cooldown <= 0 %>
+
+    <% if can_play %>
+
+      <button
+        data-action="click->card#activateCard"
+        data-card-url-value="<%= activate_card_match_path(
+          match,
+          player_card_id: card.id
+        ) %>"
+      >
+        Activate
+      </button>
+
+    <% else %>
+
+      <button disabled>
+        Unavailable
+      </button>
+
+    <% end %>
+
+  <% end %>
+
+</div>

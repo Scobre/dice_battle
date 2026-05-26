@@ -1,0 +1,109 @@
+<h2>Face Shop</h2>
+<div class="shop faces-shop">
+  <% match.shop_slots.face.each do |slot| %>
+    <div class="shop-item">
+      <h3>
+        <%= slot.face_template.name %>
+      </h3>
+
+      <p>
+        Cost:
+        <%= slot.face_template.gold_cost %>
+      </p>
+
+      <p>
+        Type:
+        <%= slot.face_template.face_type %>
+      </p>
+
+
+      <% if match.active_player.has_rolled? %>
+
+        <%= form_with url: buy_match_path(match), method: :post do %>
+
+          <%= hidden_field_tag :shop_slot_id, slot.id %>
+
+          <%= select_tag :dice_face_id,
+            options_for_select(
+              match.active_player
+                .dices
+                .flat_map(&:dice_faces)
+                .map do |face|
+
+                  [
+                    "#{face.face_template.name} (D#{face.dice.position + 1})",
+                    face.id
+                  ]
+                end
+            )
+          %>
+
+
+          <% item = slot.face_template || slot.card_template %>
+          <% can_afford = match.active_player.gold >= item.gold_cost %>
+
+          <% if can_afford %>
+
+            <%= submit_tag "Buy" %>
+
+          <% else %>
+
+            <button disabled>
+              Need <%= item.gold_cost %> gold
+            </button>
+
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<h2>Card Shop</h2>
+<div class="shop cards-shop">
+  <% match.shop_slots.card.each do |slot| %>
+    <div class="shop-item">
+      <h3>
+        <%= slot.card_template.name %>
+      </h3>
+
+      <p>
+        Gold cost:
+        <%= slot.card_template.gold_cost %>
+      </p>
+
+      <p>
+        Mana cost:
+        <%= slot.card_template.mana_cost %>
+      </p>
+
+
+      <% if match.active_player.has_rolled? %>
+
+        <%= form_with url: buy_match_path(match), method: :post do %>
+
+          <%= hidden_field_tag :shop_slot_id, slot.id %>
+
+          <% item = slot.face_template || slot.card_template %>
+          <% can_afford = match.active_player.gold >= item.gold_cost %>
+
+          <% if can_afford %>
+
+            <%= submit_tag "Buy" %>
+
+          <% else %>
+
+            <button disabled>
+              Need <%= item.gold_cost %> gold
+            </button>
+
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+    </div>
+  <% end %>
+</div>

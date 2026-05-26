@@ -1,7 +1,7 @@
 CARD_TYPE = {
   spell: 0,
   passive: 1,
-  artifact: 2,
+  power: 2,
   reaction: 3
 }.freeze
 
@@ -31,11 +31,18 @@ SLOT_TYPE = {
   card: 1
 }.freeze
 
-PLAYER_CARD_ZONE = {
-  deck: 0,
-  hand: 1,
-  discard: 2,
-  in_play: 3,
-  exhausted: 4,
-  banished: 5
-}.freeze
+# PLAYER_CARD_ZONE = {
+#   deck: 0,
+#   hand: 1,
+#   discard: 2,
+#   in_play: 3,
+#   exhausted: 4,
+#   banished: 5
+# }.freeze
+
+# PLAYER_CARD_ZONE = {
+#   state: 0,
+#   cooldown: 1,
+#   charges: 2,
+#   active: 3
+# }.freeze

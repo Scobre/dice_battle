@@ -11,12 +11,12 @@ class TurnManagerService
     current_player = match.active_player
 
     cleanup_end_of_turn(current_player)
-    cleanup_cards(current_player)
+    # cleanup_cards(current_player)
 
     next_player = determine_next_player
 
     cleanup_start_of_turn(next_player)
-    DrawCardsService.call(next_player)
+    # DrawCardsService.call(next_player)
 
     match.update(
       active_player: next_player,
@@ -58,6 +58,9 @@ class TurnManagerService
       shield: 0,
       has_rolled: false,
       last_roll_results: []
+    )
+    player.player_cards.update_all(
+      exhausted: false
     )
   end
 end

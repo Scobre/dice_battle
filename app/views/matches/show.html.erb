@@ -1,200 +1,38 @@
 <h1>Match <%= @match.id %></h1>
 
-<h2>
-  Active Player:
-  <%= @match.active_player.name %>
-</h2>
+<% if @match.finished? %>
 
-<%= button_to "End Turn",
-  end_turn_match_path(@match),
-  method: :post %>
+  <h1>
+    🏆
+    Winner:
+    <%= @match.winner.name %>
+  </h1>
 
-<hr>
+<% else %>
 
-<h2>Shop</h2>
-
-<div class="shop">
-
-  <% @match.shop_slots.each do |slot| %>
-
-    <div class="shop-item">
-
-      <% if slot.face? %>
-
-        <h3>
-          <%= slot.face_template.name %>
-        </h3>
-
-        <p>
-          Cost:
-          <%= slot.face_template.cost %>
-        </p>
-
-        <p>
-          Type:
-          <%= slot.face_template.face_type %>
-        </p>
-
-      <% elsif slot.card? %>
-
-        <h3>
-          <%= slot.card_template.name %>
-        </h3>
-
-        <p>
-          Cost:
-          <%= slot.card_template.cost %>
-        </p>
-
-      <% end %>
-
-      <% if @match.active_player.has_rolled? %>
-
-        <%= form_with url: buy_match_path(@match), method: :post do %>
-
-          <%= hidden_field_tag :shop_slot_id, slot.id %>
-
-          <% if slot.face? %>
-
-            <%= select_tag :dice_face_id,
-              options_for_select(
-                @match.active_player
-                  .dices
-                  .flat_map(&:dice_faces)
-                  .map do |face|
-
-                    [
-                      "#{face.face_template.name} (D#{face.dice.position + 1})",
-                      face.id
-                    ]
-                  end
-              )
-            %>
-
-          <% end %>
-
-          <% item = slot.face_template || slot.card_template %>
-          <% can_afford = @match.active_player.gold >= item.cost %>
-
-          <% if can_afford %>
-
-            <%= submit_tag "Buy" %>
-
-          <% else %>
-
-            <button disabled>
-              Need <%= item.cost %> gold
-            </button>
-
-          <% end %>
-
-        <% end %>
-
-      <% end %>
-
-    </div>
-
+  <%= turbo_frame_tag "active_player" do %>
+    <%= render "active_player", match: @match %>
   <% end %>
 
-</div>
+  <hr>
 
-<hr>
+  <h2>Shop</h2>
 
-<div class="players">
-
-  <% @match.players.each do |player| %>
-
-    <div class="player-panel">
-
-      <h2>
-        <%= player.name %>
-
-        <% if player == @match.active_player %>
-          ⭐
-        <% end %>
-      </h2>
-
-      <p>
-        HP: <%= player.health %> |
-        Gold: <%= player.gold %> |
-        Mana: <%= player.mana %> |
-        Shield: <%= player.shield %> |
-        Mastery: <%= player.mastery %>
-      </p>
-
-      <% if player == @match.active_player &&
-            !player.has_rolled? %>
-
-        <%= button_to "Roll Dice",
-          roll_dice_match_path(@match, player_id: player.id),
-          method: :post %>
-
-      <% end %>
-
-      <h3>Last Roll</h3>
-
-      <ul>
-
-        <% player.last_roll_results.each do |result| %>
-
-          <li>
-            <%= result["face"] %>
-            (+<%= result["value"] %>)
-          </li>
-
-        <% end %>
-
-      </ul>
-
-      <h3>Hand</h3>
-
-      <div class="shop">
-
-        <% player.player_cards.hand.each do |card| %>
-
-          <div class="shop-item">
-
-            <strong>
-              <%= card.card_template.name %>
-            </strong>
-
-            <p>
-              Cost:
-              <%= card.card_template.cost %>
-            </p>
-
-            <% if player == @match.active_player %>
-
-              <%= button_to "Play",
-                play_card_match_path(
-                  @match,
-                  player_card_id: card.id
-                ),
-                method: :post %>
-
-            <% end %>
-
-          </div>
-
-        <% end %>
-
-      </div>
-
-      <h3>Dices</h3>
-
-      <div class="dices">
-
-        <% player.dices.each do |dice| %>
-
-          <%= render "dices/dice",
-            dice: dice %>
-
-        <% end %>
-
-      </div>
-
-    </div>
-
+  <%= turbo_frame_tag "shop" do %>
+    <%= render "shop", match: @match %>
   <% end %>
 
-</div>
+  <hr>
+
+  <div class="players">
+
+    <% @match.players.order(:position).each do |player| %>
+
+      <%= turbo_frame_tag dom_id(player) do %>
+        <%= render "player_panel", player: player, match: @match %>
+      <% end %>
+
+    <% end %>
+
+  </div>
+<% end %>

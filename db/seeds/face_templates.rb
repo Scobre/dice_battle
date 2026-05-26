@@ -9,7 +9,7 @@ class Seeder
         face_type: :gold,
         value: 1,
         rarity: :common,
-        cost: 2,
+        gold_cost: 2,
         tags: [],
         effects: []
       },
@@ -19,7 +19,7 @@ class Seeder
         face_type: :gold,
         value: 2,
         rarity: :rare,
-        cost: 5,
+        gold_cost: 5,
         tags: [],
         effects: []
       },
@@ -29,7 +29,7 @@ class Seeder
         face_type: :attack,
         value: 1,
         rarity: :common,
-        cost: 2,
+        gold_cost: 2,
         tags: [],
         effects: []
       },
@@ -39,7 +39,7 @@ class Seeder
         face_type: :attack,
         value: 2,
         rarity: :rare,
-        cost: 5,
+        gold_cost: 5,
         tags: [],
         effects: []
       },
@@ -49,7 +49,17 @@ class Seeder
         face_type: :mana,
         value: 1,
         rarity: :common,
-        cost: 3,
+        gold_cost: 3,
+        tags: [],
+        effects: []
+      },
+      {
+        name: "Mana II",
+        icon: "🔮",
+        face_type: :mana,
+        value: 2,
+        rarity: :common,
+        gold_cost: 6,
         tags: [],
         effects: []
       },
@@ -59,7 +69,17 @@ class Seeder
         face_type: :shield,
         value: 1,
         rarity: :common,
-        cost: 2,
+        gold_cost: 2,
+        tags: [],
+        effects: []
+      },
+      {
+        name: "Shield II",
+        icon: "🛡️",
+        face_type: :shield,
+        value: 2,
+        rarity: :common,
+        gold_cost: 5,
         tags: [],
         effects: []
       },
@@ -69,7 +89,7 @@ class Seeder
         face_type: :utility,
         value: 0,
         rarity: :common,
-        cost: 0,
+        gold_cost: 0,
         tags: ["blank"],
         effects: []
       }

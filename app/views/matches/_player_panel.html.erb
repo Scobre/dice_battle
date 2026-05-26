@@ -1,0 +1,111 @@
+<div class="player-panel">
+
+  <h2>
+    <%= player.name %>
+
+    <% if player == match.active_player %>
+      ⭐
+    <% end %>
+  </h2>
+
+  <p>
+    HP: <%= player.health %> |
+    Gold: <%= player.gold %> |
+    Mana: <%= player.mana %> |
+    Shield: <%= player.shield %> |
+    Mastery: <%= player.mastery %>
+  </p>
+
+  <% if player == match.active_player &&
+        !player.has_rolled? %>
+
+    <button
+      data-controller="roll"
+      data-roll-player-id-value="<%= player.id %>"
+      data-roll-url-value="<%= roll_dice_match_path(match, player_id: player.id) %>"
+      data-action="click->roll#roll"
+    >
+      Roll Dice
+    </button>
+
+  <% end %>
+
+  <h3>Last Roll</h3>
+
+  <ul>
+
+    <% player.last_roll_results.each do |result| %>
+
+      <li>
+        <%= result["face"] %>
+        (+<%= result["value"] %>)
+      </li>
+
+    <% end %>
+
+  </ul>
+
+
+  <h3>Dices</h3>
+
+  <div class="dices" id="player-dices-<%= player.id %>">
+
+    <% player.dices.each do |dice| %>
+
+      <%= render "dices/dice",
+        dice: dice %>
+
+    <% end %>
+
+  </div>
+
+  <div class="cards-section">
+
+    <h3>Passives</h3>
+
+    <div class="cards-grid">
+
+      <% player.player_cards
+        .joins(:card_template)
+        .merge(CardTemplate.passive)
+        .each do |card| %>
+
+        <%= render "player_cards/card",
+          card: card,
+          player: player,
+          match: match,
+          playable: false %>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+  <div class="cards-section">
+
+    <h3>Abilities</h3>
+
+    <div class="cards-grid">
+
+      <% player.player_cards
+        .joins(:card_template)
+        .where.not(
+          card_templates: {
+            card_type: :passive
+          }
+        ).each do |card| %>
+
+        <%= render "player_cards/card",
+          card: card,
+          player: player,
+          match: match,
+          playable: player == match.active_player %>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>
